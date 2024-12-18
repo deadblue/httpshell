@@ -62,10 +62,11 @@ func (s *Shell) Start() (err error) {
 func (s *Shell) Stop() {
 	go func() {
 		if s.cf == 0 {
-			s.die(s.hs.Shutdown(context.Background()))
+			err := s.hs.Shutdown(context.Background())
 			if ob, ok := s.core.(ShutdownObserver); ok {
 				ob.AfterShutdown()
 			}
+			s.die(err)
 		}
 	}()
 }
